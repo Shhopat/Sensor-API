@@ -5,16 +5,19 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "sky")
 public class Sky {
     public Sky() {
     }
 
-    public Sky(int id, double value, boolean raning, Sensor sensor) {
+    public Sky(int id, double value, boolean raning, LocalDateTime date, Sensor sensor) {
         this.id = id;
         this.value = value;
         this.raning = raning;
+        this.date = date;
         this.sensor = sensor;
     }
 
@@ -30,6 +33,9 @@ public class Sky {
 
     @Column(name = "raning", nullable = false)
     private boolean raning;
+
+    @Column(name = "date", nullable = true)
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sensor_id", referencedColumnName = "id", nullable = false)
@@ -65,5 +71,13 @@ public class Sky {
 
     public void setSensor(Sensor sensor) {
         this.sensor = sensor;
+    }
+
+    public LocalDateTime getDate() {
+        return this.date;
+    }
+
+    public void setDate(LocalDateTime localDateTime) {
+        date = localDateTime;
     }
 }

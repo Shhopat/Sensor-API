@@ -16,12 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sky")
@@ -29,16 +28,13 @@ public class SkyController {
     private final SkyService skyService;
 
     private final SensorService sensorService;
-    private final SensorMapper sensorMapper;
     private final SkyMapper skyMapper;
 
 
     @Autowired
-    public SkyController(SkyService skyService, SensorService sensorService, SensorMapper sensorMapper, SkyMapper skyMapper) {
+    public SkyController(SkyService skyService, SensorService sensorService, SkyMapper skyMapper) {
         this.skyService = skyService;
-
         this.sensorService = sensorService;
-        this.sensorMapper = sensorMapper;
         this.skyMapper = skyMapper;
     }
 
@@ -58,9 +54,23 @@ public class SkyController {
         Sky sky = skyMapper.toEntity(skyDTO);
         Sensor sensor = sensorService.findByName(skyDTO.getSensorDTO().getName());
         sky.setSensor(sensor);
+        sky.setDate(LocalDateTime.now());
         skyService.save(sky);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<SkyDTO>> getAllSky() {
+        List<SkyDTO> skyDTOList = skyMapper.toDTOList(skyService.findAll());
+        return new ResponseEntity<>(skyDTOList, HttpStatus.OK);
 
+    }
+
+    @GetMapping("/rain")
+    public ResponseEntity<List<SkyDTO>> getRainDay() {
+        List<SkyDTO> skyDTOList = skyMapper.toDTOList(skyService.findAll()
+                .stream().filter(Sky::isRaning).toList());
+
+        return new ResponseEntity<>(skyDTOList, HttpStatus.OK);
     }
 }

@@ -5,13 +5,16 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
+
 public class SkyDTO {
     public SkyDTO() {
     }
 
-    public SkyDTO(double value, boolean raning, SensorDTO sensorDTO) {
+    public SkyDTO(double value, boolean raning, LocalDateTime date, SensorDTO sensorDTO) {
         this.value = value;
         this.raning = raning;
+        this.date = date;
         this.sensorDTO = sensorDTO;
     }
 
@@ -23,6 +26,10 @@ public class SkyDTO {
 
     @Column(name = "raning", nullable = false)
     private boolean raning;
+
+
+    @Column(name = "date", nullable = true)
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sensor_id", referencedColumnName = "id", nullable = false)
@@ -51,4 +58,13 @@ public class SkyDTO {
     public void setSensorDTO(SensorDTO sensorDTO) {
         this.sensorDTO = sensorDTO;
     }
+
+    public LocalDateTime getDate() {
+        return this.date;
+    }
+
+    public void setDate(LocalDateTime localDateTime) {
+        date = localDateTime;
+    }
+
 }
