@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 @Entity
 @Table(name = "sensor")
 public class Sensor {
@@ -24,6 +26,9 @@ public class Sensor {
     @Size(min = 3, max = 30, message = "length should be between 3 and 30 character")
     private String name;
 
+    @OneToMany(mappedBy = "sensor", fetch = FetchType.EAGER)
+    private List<Sky> skyList;
+
     public int getId() {
         return id;
     }
@@ -38,5 +43,13 @@ public class Sensor {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Sky> getSkyList() {
+        return skyList;
+    }
+
+    public void setSkyList(List<Sky> skyList) {
+        this.skyList = skyList;
     }
 }

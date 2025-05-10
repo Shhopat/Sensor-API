@@ -2,11 +2,12 @@ package com.example.Spring.REST.API.DTO;
 
 import java.time.LocalDateTime;
 
-public class SensorExceptionDTO {
-    public SensorExceptionDTO() {
+public class ExceptionDTO {
+
+    public ExceptionDTO() {
     }
 
-    public SensorExceptionDTO(String message, LocalDateTime localDateTime) {
+    public ExceptionDTO(String message, LocalDateTime localDateTime) {
         this.message = message;
         this.localDateTime = localDateTime;
     }
