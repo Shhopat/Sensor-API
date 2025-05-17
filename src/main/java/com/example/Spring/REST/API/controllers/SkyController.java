@@ -54,7 +54,6 @@ public class SkyController {
         Sky sky = skyMapper.toEntity(skyDTO);
         Sensor sensor = sensorService.findByName(skyDTO.getSensorDTO().getName());
         sky.setSensor(sensor);
-        sky.setDate(LocalDateTime.now());
         skyService.save(sky);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -69,7 +68,8 @@ public class SkyController {
     @GetMapping("/rain")
     public ResponseEntity<List<SkyDTO>> getRainDay() {
         List<SkyDTO> skyDTOList = skyMapper.toDTOList(skyService.findAll()
-                .stream().filter(Sky::isRaning).toList());
+                .stream().filter(Sky::isRaning).toList())
+                ;
 
         return new ResponseEntity<>(skyDTOList, HttpStatus.OK);
     }
